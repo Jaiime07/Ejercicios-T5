@@ -41,6 +41,8 @@ def lee_pingüinos(ruta_archivo: str) -> list[Penguin]:
             pingüinos.append(pingüino)
         return pingüinos
     
+
+from collections import Counter
 def cuenta_pingüinos_por_especie(pingüinos: list[Penguin]) -> dict[str, int]:
     """
     Cuenta el número de pingüinos por especie.
@@ -51,8 +53,12 @@ def cuenta_pingüinos_por_especie(pingüinos: list[Penguin]) -> dict[str, int]:
     Devuelve:
     dict[str, int]: Diccionario que asocia cada especie de pingüino con su conteo.
     """
-    # TODO: Implementar la función
-    pass
+    especies = []
+    for pingu in pingüinos:
+        especies.append(pingu.species)
+    
+    return Counter(especies)
+    
 
 def calcula_media_masa_corporal_por_especie(pingüinos: list[Penguin]) -> dict[str, float]:
     """

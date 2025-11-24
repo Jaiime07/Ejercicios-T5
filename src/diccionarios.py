@@ -44,7 +44,6 @@ def indexa_por_iniciales(texto: str) -> dict[str, set[str]]:
                    
 
                    
-         
 
 def construye_frecuencias_bigramas(texto: str) -> dict[str, float]:
     """
@@ -60,8 +59,21 @@ def construye_frecuencias_bigramas(texto: str) -> dict[str, float]:
     Devuelve:
         Diccionario que asocia a cada bigrama su frecuencia normalizada en el texto.
     """
-    # TODO: Implementar la función
-    pass
+    texto = texto.lower()
+    bigramas = []
+    recuento_frecuencia = {}
+    for a, b in zip(texto, texto[1:]):
+        if (a+b).isalpha():
+            bigramas.append(a+b)
+
+    recuento = Counter(bigramas)
+
+    for bigrama, apariciones in recuento.items():
+        frecuencia = apariciones / len(bigramas)
+        recuento_frecuencia[bigrama] = frecuencia
+    return recuento_frecuencia
+        
+
 
 
 def calcula_distancia_media_frecuencias(freq1: dict[str, float], freq2: dict[str, float]) -> float:
@@ -76,8 +88,11 @@ def calcula_distancia_media_frecuencias(freq1: dict[str, float], freq2: dict[str
     Devuelve:
         Distancia media entre los dos vectores de frecuencias, o 0.0 si ambos diccionarios están vacíos.
     """
-    # TODO: Implementar la función
-    pass
+  
+
+        
+
+
 
 def identifica_idioma(textos_ejemplo: dict[str, str], texto_a_identificar: str) -> str:
     """
