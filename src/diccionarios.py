@@ -88,10 +88,13 @@ def calcula_distancia_media_frecuencias(freq1: dict[str, float], freq2: dict[str
     Devuelve:
         Distancia media entre los dos vectores de frecuencias, o 0.0 si ambos diccionarios están vacíos.
     """
-  
-
-        
-
+    if len(freq1) == 0 and len(freq2) == 0:
+        return 0.0
+    todas_claves = set(freq1).union(set(freq2))
+    suma = 0
+    for bigrama in todas_claves:
+        suma += abs(freq1.get(bigrama, 0) - freq2.get(bigrama, 0))
+    return suma / len(todas_claves)
 
 
 def identifica_idioma(textos_ejemplo: dict[str, str], texto_a_identificar: str) -> str:
@@ -106,8 +109,7 @@ def identifica_idioma(textos_ejemplo: dict[str, str], texto_a_identificar: str) 
     Devuelve:
         El idioma identificado del texto.
     """
-    # TODO: Implementar la función
-    pass
+    
 
 
 
