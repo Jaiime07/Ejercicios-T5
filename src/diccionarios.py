@@ -60,17 +60,18 @@ def construye_frecuencias_bigramas(texto: str) -> dict[str, float]:
         Diccionario que asocia a cada bigrama su frecuencia normalizada en el texto.
     """
     texto = texto.lower()
-    bigramas = []
     recuento_frecuencia = {}
-    for a, b in zip(texto, texto[1:]):
-        if (a+b).isalpha():
-            bigramas.append(a+b)
-
+    #for a, b in zip(texto, texto[1:]):
+    #    if (a+b).isalpha():
+    #        bigramas.append(a+b)
+    bigramas = [a+b for a, b in zip(texto, texto[1:]) if (a+b).isalpha()]
+    
     recuento = Counter(bigramas)
 
-    for bigrama, apariciones in recuento.items():
-        frecuencia = apariciones / len(bigramas)
-        recuento_frecuencia[bigrama] = frecuencia
+    #for bigrama, apariciones in recuento.items():
+    #    frecuencia = apariciones / len(bigramas)
+    #    recuento_frecuencia[bigrama] = frecuencia
+    recuento_frecuencia = {bigrama: apariciones / len(bigramas) for bigrama, apariciones in recuento.items()}
     return recuento_frecuencia
         
 
@@ -109,7 +110,15 @@ def identifica_idioma(textos_ejemplo: dict[str, str], texto_a_identificar: str) 
     Devuelve:
         El idioma identificado del texto.
     """
-    
+    distancia_cada_idioma : list[tuple[float, str]] = list()   #lista de tuplas con las distancias entre el texto y cada  idioma
+    for idioma, texto in textos_ejemplo.items():
+        #añadimos la tupla con la distancia y el idioma
+        distancia_cada_idioma.append((
+            calcula_distancia_media_frecuencias(construye_frecuencias_bigramas(texto_a_identificar), 
+                                                construye_frecuencias_bigramas(texto)),    
+        idioma))
+    menor = min(distancia_cada_idioma) 
+    return menor[1]
 
 
 
