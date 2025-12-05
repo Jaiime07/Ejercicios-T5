@@ -41,7 +41,6 @@ def lee_pingüinos(ruta_archivo: str) -> list[Penguin]:
             pingüinos.append(pingüino)
         return pingüinos
     
-
 from collections import Counter
 
 def cuenta_pingüinos_por_especie(pingüinos: list[Penguin]) -> dict[str, int]:
@@ -54,13 +53,20 @@ def cuenta_pingüinos_por_especie(pingüinos: list[Penguin]) -> dict[str, int]:
     Devuelve:
     dict[str, int]: Diccionario que asocia cada especie de pingüino con su conteo.
     """
-    especies = []
-    for pingu in pingüinos:
-        especies.append(pingu.species)
-    
-    return Counter(especies)
-    
+    #Forma básica de resolverlo:
+    #especies = []
+    #for pingu in pingüinos:
+    #    especies.append(pingu.species)
 
+    #Resolviendo con comprensión de listas
+    #especies = [pingu.species for pingu in pingüinos]
+    #return Counter(especies)
+    
+    #Resolviendo con generadores:
+    return Counter(pingu.species for pingu in pingüinos) #De esta forma ahorramos memoria, pues 
+                                    #evitamos crear una lista que podría cotener millones de datos
+
+from collections import defaultdict
 def calcula_media_masa_corporal_por_especie(pingüinos: list[Penguin]) -> dict[str, float]:
     """
     Calcula la masa corporal media de los pingüinos por especie.
@@ -71,7 +77,30 @@ def calcula_media_masa_corporal_por_especie(pingüinos: list[Penguin]) -> dict[s
     Devuelve:
     dict[str, float]: Diccionario que asocia cada especie de pingüino con su masa corporal media.
     """
+    suma_masa: dict[str, float] = {}
+    pingu_valido = []
+    especies = set()
+    #media_especie = {}
     
+    for pingu in pingüinos:
+        if pingu.body_mass_g != None:
+            if pingu.species not in suma_masa: #introducimos la clave en el diccionario
+                suma_masa[pingu.species] = 0   #para evitar KeyError
+            suma_masa[pingu.species] += pingu.body_mass_g
+            pingu_valido.append(pingu)
+            especies.add(pingu.species)
+    conteo_validos = cuenta_pingüinos_por_especie(pingu_valido)
+
+    #for especie in especies:
+    #    media_especie[especie] = int(suma_masa[especie] / conteo_validos[especie])
+
+    #Haciéndolo por comprensión:
+    media_especie = {especie: int(suma_masa[especie] / conteo_validos[especie]) for especie in especies}
+    
+    return media_especie
+
+
+
 
 def calcula_minimo_maximo_pico_por_especie(pingüinos: list[Penguin]) -> dict[str, tuple[float, float]]:
     """
@@ -84,8 +113,9 @@ def calcula_minimo_maximo_pico_por_especie(pingüinos: list[Penguin]) -> dict[st
     dict[str, tuple[float, float]]: Diccionario que asocia cada especie de pingüino con una tupla
                                     que contiene la longitud mínima y máxima del pico.
     """
-    # TODO: Implementar la función
-    pass
+    #
+    
+
 
 
 def cuenta_pingüinos_por_especie_filtro(pingüinos: list[Penguin], filtra_isla: str = None) -> dict[str, int]:
